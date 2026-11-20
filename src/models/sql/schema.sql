@@ -5,6 +5,9 @@ DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS vehicle_images CASCADE;
 DROP TABLE IF EXISTS vehicles CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS request_status_history CASCADE;
+DROP TABLE IF EXISTS service_notes CASCADE;
+DROP TABLE IF EXISTS service_requests CASCADE;
 
 -- Roles: lookup table for permission levels
 CREATE TABLE roles (
@@ -70,4 +73,37 @@ CREATE TABLE reviews (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (user_id, vehicle_id)
+);
+
+-- Service requests: customers request service for their own vehicle
+CREATE TABLE service_requests (
+  request_id   SERIAL PRIMARY KEY,
+  user_id      INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  vehicle_info VARCHAR(150) NOT NULL,
+  service_type VARCHAR(50)  NOT NULL,
+  description  TEXT,
+  status       VARCHAR(20)  NOT NULL DEFAULT 'Submitted'
+               CHECK (status IN ('Submitted', 'In Progress', 'Completed')),
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Service notes: employees add notes to a request
+CREATE TABLE service_notes (
+  note_id    SERIAL PRIMARY KEY,
+  request_id INTEGER NOT NULL REFERENCES service_requests(request_id) ON DELETE CASCADE,
+  author_id  INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
+  note       TEXT NOT NULL CHECK (length(trim(note)) BETWEEN 1 AND 2000),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Status history: every status change, with who made it and when
+CREATE TABLE request_status_history (
+  history_id SERIAL PRIMARY KEY,
+  request_id INTEGER NOT NULL REFERENCES service_requests(request_id) ON DELETE CASCADE,
+  old_status VARCHAR(20) CHECK (old_status IN ('Submitted', 'In Progress', 'Completed')),
+  new_status VARCHAR(20) NOT NULL
+             CHECK (new_status IN ('Submitted', 'In Progress', 'Completed')),
+  changed_by INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
+  changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
