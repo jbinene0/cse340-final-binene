@@ -2,6 +2,8 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS vehicle_images CASCADE;
+DROP TABLE IF EXISTS vehicles CASCADE;
 
 -- Roles: lookup table for permission levels
 CREATE TABLE roles (
@@ -30,4 +32,29 @@ CREATE TABLE users (
 CREATE TABLE categories (
   category_id SERIAL PRIMARY KEY,
   name        VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Vehicles: dealership inventory
+CREATE TABLE vehicles (
+  vehicle_id   SERIAL PRIMARY KEY,
+  category_id  INTEGER REFERENCES categories(category_id) ON DELETE SET NULL,
+  make         VARCHAR(50)   NOT NULL,
+  model        VARCHAR(50)   NOT NULL,
+  year         SMALLINT      NOT NULL CHECK (year BETWEEN 1900 AND 2100),
+  price        NUMERIC(10,2) NOT NULL CHECK (price >= 0),
+  mileage      INTEGER       NOT NULL DEFAULT 0 CHECK (mileage >= 0),
+  description  TEXT,
+  is_available BOOLEAN NOT NULL DEFAULT TRUE,
+  is_featured  BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Vehicle images: one vehicle can have many images
+CREATE TABLE vehicle_images (
+  image_id   SERIAL PRIMARY KEY,
+  vehicle_id INTEGER NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
+  image_url  VARCHAR(255) NOT NULL,
+  alt_text   VARCHAR(255),
+  is_primary BOOLEAN NOT NULL DEFAULT FALSE
 );
