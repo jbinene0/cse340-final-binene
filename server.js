@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from './src/models/db.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -42,6 +43,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  try {
+    await db.query('SELECT NOW()');
+    console.log('Database connected');
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
+  }
   console.log(`Server is running at http://localhost:${PORT}`);
 });
