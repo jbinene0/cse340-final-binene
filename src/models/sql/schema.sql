@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS vehicle_images CASCADE;
 DROP TABLE IF EXISTS vehicles CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
 
 -- Roles: lookup table for permission levels
 CREATE TABLE roles (
@@ -57,4 +58,16 @@ CREATE TABLE vehicle_images (
   image_url  VARCHAR(255) NOT NULL,
   alt_text   VARCHAR(255),
   is_primary BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+-- Reviews: users review vehicles, one review per user per vehicle
+CREATE TABLE reviews (
+  review_id  SERIAL PRIMARY KEY,
+  vehicle_id INTEGER NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  rating     SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  body       TEXT NOT NULL CHECK (length(trim(body)) BETWEEN 1 AND 2000),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (user_id, vehicle_id)
 );
