@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS request_status_history CASCADE;
 DROP TABLE IF EXISTS service_notes CASCADE;
 DROP TABLE IF EXISTS service_requests CASCADE;
+DROP TABLE IF EXISTS contact_messages CASCADE;
 
 -- Roles: lookup table for permission levels
 CREATE TABLE roles (
@@ -106,4 +107,15 @@ CREATE TABLE request_status_history (
              CHECK (new_status IN ('Submitted', 'In Progress', 'Completed')),
   changed_by INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
   changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Contact messages: submitted from the public contact form
+CREATE TABLE contact_messages (
+  message_id SERIAL PRIMARY KEY,
+  name       VARCHAR(100) NOT NULL,
+  email      VARCHAR(255) NOT NULL,
+  subject    VARCHAR(150) NOT NULL,
+  message    TEXT NOT NULL CHECK (length(trim(message)) BETWEEN 1 AND 5000),
+  is_read    BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
