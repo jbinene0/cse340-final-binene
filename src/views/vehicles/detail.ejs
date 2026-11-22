@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+<a href="/">&larr; Back</a>
+
+<h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
+
+<% if (images.length > 0) { %>
+  <div class="vehicle-images">
+    <% images.forEach(image => { %>
+      <img src="<%= image.image_url %>" alt="<%= image.alt_text %>">
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="no-image">No image available</div>
+<% } %>
+
+<p class="price"><%= Number(vehicle.price).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></p>
+
+<ul class="specs">
+  <li><strong>Category:</strong> <%= vehicle.category || 'Uncategorized' %></li>
+  <li><strong>Mileage:</strong> <%= vehicle.mileage.toLocaleString() %> miles</li>
+  <li><strong>Status:</strong> <%= vehicle.is_available ? 'Available' : 'Sold' %></li>
+</ul>
+
+<% if (vehicle.description) { %>
+  <p><%= vehicle.description %></p>
+<% } %>
+<%- include('../partials/footer') %>

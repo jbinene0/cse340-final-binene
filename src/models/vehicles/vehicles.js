@@ -20,4 +20,33 @@ const getFeaturedVehicles = async () => {
   return result.rows;
 };
 
-export { getFeaturedVehicles };
+/**
+ * Get one vehicle by ID, with its category name.
+ * Returns undefined if no vehicle has that ID.
+ */
+const getVehicleById = async (vehicleId) => {
+  const sql = `
+    SELECT v.*, c.name AS category
+    FROM vehicles v
+    LEFT JOIN categories c ON v.category_id = c.category_id
+    WHERE v.vehicle_id = $1
+  `;
+  const result = await db.query(sql, [vehicleId]);
+  return result.rows[0];
+};
+
+/**
+ * Get all images for a vehicle, primary image first.
+ */
+const getVehicleImages = async (vehicleId) => {
+  const sql = `
+    SELECT image_url, alt_text, is_primary
+    FROM vehicle_images
+    WHERE vehicle_id = $1
+    ORDER BY is_primary DESC, image_id
+  `;
+  const result = await db.query(sql, [vehicleId]);
+  return result.rows;
+};
+
+export { getFeaturedVehicles, getVehicleById, getVehicleImages };
