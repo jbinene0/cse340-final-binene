@@ -1,4 +1,5 @@
 import { getVehicleById, getVehicleImages } from '../../models/vehicles/vehicles.js';
+import { getCategoryByName } from '../../models/vehicles/categories.js';
 
 const vehicleDetailPage = async (req, res, next) => {
   const vehicleId = Number(req.params.id);
@@ -18,4 +19,12 @@ const vehicleDetailPage = async (req, res, next) => {
   });
 };
 
-export { vehicleDetailPage };
+const categoryPage = async (req, res, next) => {
+  const category = await getCategoryByName(req.params.category);
+  if (!category) return next();
+
+  const vehicles = await getVehiclesByCategory(category.category_id);
+  res.render('vehicles/list', { title: category.name, category, vehicles });
+};
+
+export { vehicleDetailPage, categoryPage };

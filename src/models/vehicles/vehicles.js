@@ -49,4 +49,19 @@ const getVehicleImages = async (vehicleId) => {
   return result.rows;
 };
 
+const getVehiclesByCategory = async (categoryId) => {
+  const sql = `
+    SELECT v.vehicle_id, v.make, v.model, v.year, v.price, v.mileage,
+           c.name AS category,
+           vi.image_url, vi.alt_text
+    FROM vehicles v
+    JOIN categories c ON v.category_id = c.category_id
+    LEFT JOIN vehicle_images vi ON vi.vehicle_id = v.vehicle_id AND vi.is_primary = TRUE
+    WHERE v.category_id = $1 AND v.is_available = TRUE
+    ORDER BY v.year DESC
+  `;
+  const result = await db.query(sql, [categoryId]);
+  return result.rows;
+};
+
 export { getFeaturedVehicles, getVehicleById, getVehicleImages };

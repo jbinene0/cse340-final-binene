@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import db from './src/models/db.js';
 import router from './src/controllers/routes.js';
+import { addGlobalData } from './src/middleware/global.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,6 +20,7 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
+app.use(addGlobalData);
 app.use(router);
 
 // 404: no route matched

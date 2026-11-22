@@ -7,16 +7,7 @@
 <% } else { %>
   <div class="vehicle-grid">
     <% vehicles.forEach(vehicle => { %>
-      <a class="vehicle-card" href="/vehicle/<%= vehicle.vehicle_id %>">
-        <% if (vehicle.image_url) { %>
-          <img src="<%= vehicle.image_url %>" alt="<%= vehicle.alt_text %>">
-        <% } else { %>
-          <div class="no-image">No image available</div>
-        <% } %>
-        <h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
-        <p><%= Number(vehicle.price).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></p>
-        <p><%= vehicle.mileage.toLocaleString() %> miles · <%= vehicle.category || 'Uncategorized' %></p>
-      </a>
+      <%- include('partials/vehicle-card', { vehicle }) %>
     <% }) %>
   </div>
 <% } %>

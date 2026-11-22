@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+<h1><%= category.name %></h1>
+
+<% if (vehicles.length === 0) { %>
+  <p>No <%= category.name.toLowerCase() %> available right now.</p>
+<% } else { %>
+  <div class="vehicle-grid">
+    <% vehicles.forEach(vehicle => { %>
+      <%- include('../partials/vehicle-card', { vehicle }) %>
+    <% }) %>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>
