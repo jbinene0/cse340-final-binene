@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/jbinene0/cse340-final-binene/issues"
   },
-  "homepage": "https://github.com/jbinene0/cse340-final-binene#readme"
+  "homepage": "https://github.com/jbinene0/cse340-final-binene#readme",
+  "engines": {
+    "node": "24.x"
+  }
 }
