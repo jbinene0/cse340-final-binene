@@ -1,4 +1,23 @@
 <%- include('partials/header') %>
 <h1>Welcome to Binene Motors</h1>
-<p>Featured vehicles coming soon.</p>
+
+<h2>Featured Vehicles</h2>
+<% if (vehicles.length === 0) { %>
+  <p>No featured vehicles right now. Check back soon.</p>
+<% } else { %>
+  <div class="vehicle-grid">
+    <% vehicles.forEach(vehicle => { %>
+      <a class="vehicle-card" href="/vehicle/<%= vehicle.vehicle_id %>">
+        <% if (vehicle.image_url) { %>
+          <img src="<%= vehicle.image_url %>" alt="<%= vehicle.alt_text %>">
+        <% } else { %>
+          <div class="no-image">No image available</div>
+        <% } %>
+        <h3><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
+        <p><%= Number(vehicle.price).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></p>
+        <p><%= vehicle.mileage.toLocaleString() %> miles · <%= vehicle.category || 'Uncategorized' %></p>
+      </a>
+    <% }) %>
+  </div>
+<% } %>
 <%- include('partials/footer') %>
