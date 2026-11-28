@@ -1,4 +1,4 @@
-import { getVehicleById, getVehicleImages } from '../../models/vehicles/vehicles.js';
+import { getVehicleById, getVehicleImages, getVehiclesByCategory } from '../../models/vehicles/vehicles.js';
 import { getCategoryByName } from '../../models/vehicles/categories.js';
 
 const vehicleDetailPage = async (req, res, next) => {

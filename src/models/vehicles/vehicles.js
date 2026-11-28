@@ -64,4 +64,4 @@ const getVehiclesByCategory = async (categoryId) => {
   return result.rows;
 };
 
-export { getFeaturedVehicles, getVehicleById, getVehicleImages };
+export { getFeaturedVehicles, getVehicleById, getVehicleImages, getVehiclesByCategory };
