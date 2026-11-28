@@ -1,0 +1,31 @@
+<%- include('../../partials/header') %>
+<h1>Contact Us</h1>
+
+<% if (sent) { %>
+  <p class="success">Thanks! Your message was sent. We'll get back to you soon.</p>
+<% } %>
+
+<% if (errors.length > 0) { %>
+  <ul class="errors">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<form action="/contact" method="POST" class="form">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" maxlength="100" required value="<%= formData.name || '' %>">
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" maxlength="255" required value="<%= formData.email || '' %>">
+
+  <label for="subject">Subject</label>
+  <input type="text" id="subject" name="subject" maxlength="150" required value="<%= formData.subject || '' %>">
+
+  <label for="message">Message</label>
+  <textarea id="message" name="message" rows="6" maxlength="5000" required><%= formData.message || '' %></textarea>
+
+  <button type="submit">Send Message</button>
+</form>
+<%- include('../../partials/footer') %>
