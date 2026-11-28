@@ -5,6 +5,7 @@ import { contactValidation, showContactForm, submitContactForm } from './forms/c
 import { registrationValidation, showRegistrationForm, submitRegistration } from './forms/registration.js';
 import { loginValidation, showLoginForm, submitLogin, logout } from './forms/login.js';
 
+
 const router = Router();
 
 router.get('/', homePage);

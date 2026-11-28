@@ -66,9 +66,14 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   if (status >= 500) console.error(err.stack);
 
-  const view = status === 404 ? 'errors/404' : 'errors/500';
-  res.status(status).render(view, {
-    title: status === 404 ? 'Page Not Found' : 'Server Error',
+  const pages = {
+    403: { view: 'errors/403', title: 'Access Denied' },
+    404: { view: 'errors/404', title: 'Page Not Found' }
+  };
+  const page = pages[status] || { view: 'errors/500', title: 'Server Error' };
+
+  res.status(status).render(page.view, {
+    title: page.title,
     stack: isDev ? err.stack : null
   });
 });
