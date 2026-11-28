@@ -1,0 +1,27 @@
+<%- include('../../partials/header') %>
+<h1>Log In</h1>
+
+<% if (registered) { %>
+  <p class="success">Account created. Please log in.</p>
+<% } %>
+
+<% if (errors.length > 0) { %>
+  <ul class="errors">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<form action="/login" method="POST" class="form">
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required autocomplete="email" value="<%= formData.email %>">
+
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required autocomplete="current-password">
+
+  <button type="submit">Log In</button>
+</form>
+
+<p>Need an account? <a href="/register">Register</a></p>
+<%- include('../../partials/footer') %>

@@ -3,6 +3,7 @@ import { homePage } from './index.js';
 import { vehicleDetailPage, categoryPage } from './vehicles/vehicles.js';
 import { contactValidation, showContactForm, submitContactForm } from './forms/contact.js';
 import { registrationValidation, showRegistrationForm, submitRegistration } from './forms/registration.js';
+import { loginValidation, showLoginForm, submitLogin, logout } from './forms/login.js';
 
 const router = Router();
 
@@ -13,5 +14,8 @@ router.get('/contact', showContactForm);
 router.post('/contact', contactValidation, submitContactForm);
 router.get('/register', showRegistrationForm);
 router.post('/register', registrationValidation, submitRegistration);
+router.get('/login', showLoginForm);
+router.post('/login', loginValidation, submitLogin);
+router.post('/logout', logout);
 
 export default router;

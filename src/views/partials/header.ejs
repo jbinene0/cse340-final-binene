@@ -15,8 +15,15 @@
       <a href="/category/<%= category.name.toLowerCase() %>"><%= category.name %></a>
     <% }) %>
     <a href="/contact">Contact</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <% if (user) { %>
+      <span>Hi, <%= user.firstName %></span>
+      <form action="/logout" method="POST" class="inline-form">
+        <button type="submit">Log out</button>
+      </form>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    <% } %>
   </nav>
 </header>
 <main>
